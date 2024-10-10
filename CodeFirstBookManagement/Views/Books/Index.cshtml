@@ -1,0 +1,34 @@
+﻿@model IEnumerable<CodeFirstBookManagement.Models.Book>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>Book List</h2>
+
+<!-- Button to Create a new book -->
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary mb-3" })
+</p>
+
+<!-- Table to display the list of books -->
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

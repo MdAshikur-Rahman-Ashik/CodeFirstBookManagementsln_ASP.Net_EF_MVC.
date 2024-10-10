@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-expand-lg navbar-dark bg-secondary navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand text-white" })
+                @Html.ActionLink("Customers", "Index", "Customers", new { area = "" }, new { @class = "navbar-brand text-white" })
+                @Html.ActionLink("Books", "Index", "Books", new { area = "" }, new { @class = "navbar-brand text-white" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                </ul>
+            </div>
+        </div>
+    </div>
+   
+    <div>
+        @RenderBody()
+    </div>
+
+    <script src="~/Scripts/bootstrap.js"></script>
+</body>
+</html>

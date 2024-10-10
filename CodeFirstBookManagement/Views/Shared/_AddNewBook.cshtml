@@ -1,0 +1,11 @@
+﻿@model CodeFirstBookManagement.Models.Book
+
+<div>
+    <div>
+        @Html.DropDownListFor(d => d.BookId, ViewBag.books as SelectList, "---Select Book------")
+    </div>
+    <div>
+        <a href="#" id="btnDeleteBook" class="btn btn-danger">Delete</a>
+    </div>
+</div>
+

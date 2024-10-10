@@ -1,0 +1,223 @@
+﻿@*@model CodeFirstBookManagement.Models.ViewModel.CustomerViewModel
+    @{
+        ViewBag.Title = "Create";
+        Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+    }
+
+    <h2>Create Customer</h2>
+    @using (Html.BeginForm("Create", "Customers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary()
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            @Html.LabelFor(e => e.CustomerName)
+                            @Html.EditorFor(e => e.CustomerName)
+                            @Html.ValidationMessageFor(e => e.CustomerName)
+                        </div>
+                        <div>
+                            @Html.LabelFor(e => e.BirthDate)
+                            @Html.EditorFor(e => e.BirthDate)
+                            @Html.ValidationMessageFor(e => e.BirthDate)
+                        </div>
+                        <div>
+                            @Html.LabelFor(e => e.IsRegular)
+                            @Html.EditorFor(e => e.IsRegular)
+                            @Html.ValidationMessageFor(e => e.IsRegular)
+                        </div>
+                        <div>
+                            @Html.LabelFor(e => e.Email)
+                            @Html.EditorFor(e => e.Email)
+                            @Html.ValidationMessageFor(e => e.Email)
+                        </div>
+                        <div>
+                            @Html.LabelFor(e => e.Diposite)
+                            @Html.EditorFor(e => e.Diposite)
+                            @Html.ValidationMessageFor(e => e.Diposite)
+                        </div>
+
+                        <div>
+
+                            <img src="~/images/booklogo.png" id="imgFile" width="80" height="80" />
+                            <input type="file" id="upimg" class="upimg" onchange="readUrl(this)" name="PicturePath" style="display:none"/>
+                            <label for="upimg" class="btn btn-success">Upload</label>
+                        </div>
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div>
+                            <h2>Select Book</h2>
+                        </div>
+                        <div>
+                            <a href="#" id="btnPluse" class="btn btn-primary">Add</a>
+                        </div>
+                        <div id="bokContainer">
+                            @Html.Action("AddNewBook", "Customers")
+                        </div>
+                        <div>
+                            <input type="submit" value="Create" class="btn btn-info" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <script src="~/Scripts/jquery-3.7.1.min.js"></script>
+    <script>
+        function readUrl(input) {
+            if (input.files && input.files[0]) {
+                var rdr = new FileReader();
+                rdr.onload = function (e) {
+                    $('#imgFile').attr('src', e.target.result);
+                };
+                rdr.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#btnPluse").click(function (e) {
+            e.preventDefault();
+            var contain = $('#bokContainer')
+            $.ajax({
+                url: "/Customers/AddNewBook",
+                type: "GET",
+                success: function (d) {
+                    contain.append(d)
+                }
+
+            });
+        })
+        $(document).on('click', '#btnDeleteBook', function (e) {
+            e.preventDefault();
+            $(this).parent().parent().remove()
+        })
+    </script>*@
+@model CodeFirstBookManagement.Models.ViewModel.CustomerViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>Create Customer</h2>
+
+@using (Html.BeginForm("Create", "Customers", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-8">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <!-- Customer Name -->
+            <div class="form-group row">
+                @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- Birth Date -->
+            <div class="form-group row">
+                @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- IsRegular -->
+            <div class="form-group row">
+                @Html.LabelFor(model => model.IsRegular, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10">
+                    <div class="form-check">
+                        @Html.EditorFor(model => model.IsRegular, new { htmlAttributes = new { @class = "form-check-input" } })
+                        @Html.ValidationMessageFor(model => model.IsRegular, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- Deposit -->
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Diposite, htmlAttributes: new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Diposite, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Diposite, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- Upload Image -->
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label"></label>
+                <div class="col-md-10">
+                    <img src="~/images/booklogo.png" id="imgFile" class="img-thumbnail" width="80" height="80" />
+                    <input type="file" id="upimg" class="form-control-file" onchange="readUrl(this)" name="PicturePath" style="display:none" />
+                    <label for="upimg" class="btn btn-success mt-2">Upload</label>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Book Selection Section -->
+        <div class="col-md-4">
+            <h3>Select Book</h3>
+            <a href="#" id="btnPluse" class="btn btn-primary mb-2">Add Book</a>
+            <div id="bokContainer" class="table-responsive">
+                @Html.Action("AddNewBook", "Customers")
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group text-center">
+            <div class="col-md-12">
+                <input type="submit" value="Create" class="btn btn-info" />
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
+<script>
+    function readUrl(input) {
+        if (input.files && input.files[0]) {
+            var rdr = new FileReader();
+            rdr.onload = function (e) {
+                $('#imgFile').attr('src', e.target.result);
+            };
+            rdr.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#btnPluse").click(function (e) {
+        e.preventDefault();
+        var contain = $('#bokContainer')
+        $.ajax({
+            url: "/Customers/AddNewBook",
+            type: "GET",
+            success: function (d) {
+                contain.append(d)
+            }
+        });
+    })
+
+    $(document).on('click', '#btnDeleteBook', function (e) {
+        e.preventDefault();
+        $(this).parent().parent().remove();
+    })
+</script>

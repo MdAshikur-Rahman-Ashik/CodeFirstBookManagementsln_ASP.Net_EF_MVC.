@@ -1,0 +1,180 @@
+﻿@*@model PagedList.PagedList<CodeFirstBookManagement.Models.Customer>
+    @using PagedList.Mvc
+
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+    }
+
+    <h2>Customer List</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <a href="@Url.Action("Create","Customers")">Create New Customer</a>
+                    </div>
+                    @using (Html.BeginForm())
+                    {
+                        <p>
+                            Find by Name: @Html.TextBox("SearchString", ViewBag.currentFilter as string)
+                            <input type="submit" value="Search" class="btn btn-secondary"/>
+                        </p>
+                    }
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Customer Id</th>
+                                <th>@Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })</th>
+                                <th>@Html.ActionLink("Birth Date", "Index", new { sortOrder = ViewBag.DateSortParm })</th>
+                                <th>Email</th>
+                                <th>Diposite</th>
+                                <th>Picture</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(e => item.CustomerId)</td>
+                                    <td>@Html.DisplayFor(e => item.CustomerName)</td>
+                                    <td>@Html.DisplayFor(e => item.BirthDate)</td>
+                                    <td>@Html.DisplayFor(e => item.Email)</td>
+                                    <td>@Html.DisplayFor(e => item.Diposite)</td>
+
+                                    <td><img src="@item.Picture" width="80" height="80" /></td>
+
+                                    <td>
+                                        <a href="@Url.Action("Edit", "Customers", new { id = item.CustomerId })" class="btn btn-warning">Edit</a> |
+                                        <a href="@Url.Action("Delete", "Customers", new { id = item.CustomerId })" class="btn btn-danger">Delete</a>
+                                    </td>
+
+                                </tr>
+                                if (item.BookEntries.Any())
+                                {
+                                    <tr>
+                                        <td colspan="5">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Book Id</th>
+                                                        <th>Book Name</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item2 in item.BookEntries)
+                                                    {
+                                                        <tr>
+                                                            <td>@Html.DisplayFor(x => item2.Book.BookId)</td>
+                                                            <td>@Html.DisplayFor(x => item2.Book.BookName)</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+@model PagedList.PagedList<CodeFirstBookManagement.Models.Customer>
+@using PagedList.Mvc
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+
+
+<div class="container mt-4">
+    <h2>Customer List</h2>
+    <div class="row">
+        <div class="col-6">
+            <p>
+                @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+            </p>
+        </div>
+        <div class="col-6">
+            @using (Html.BeginForm(null, null, FormMethod.Get, new { @class = "form-inline" }))
+            {
+                <div class="form-group mb-2">
+                    <div class="input-group">
+                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Find" })
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-secondary">Search</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="thead-dark">
+            <tr>
+                
+                <th>@Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParam })</th>
+                <th>@Html.ActionLink("Birth Date", "Index", new { sortOrder = ViewBag.dateSortParam })</th>
+                <th>Email</th>
+                <th>Diposite</th>
+                <th>Picture</th>
+                <th>Book Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    
+                    <td>@Html.DisplayFor(e => item.CustomerName)</td>
+                    <td>@Html.DisplayFor(e => item.BirthDate)</td>
+                    <td>@Html.DisplayFor(e => item.Email)</td>
+                    <td>@Html.DisplayFor(e => item.Diposite)</td>
+                    <td>
+                        <img src="@item.Picture" height="80" width="80" class="img-thumbnail" />
+                    </td>
+                    <td>
+                        @foreach (var item2 in item.BookEntries)
+                        {
+                          
+                            @Html.DisplayFor(x => item2.Book.BookName)<br />
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.CustomerId }, new { @class = "btn btn-sm btn-warning" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.CustomerId }, new { @class = "btn btn-sm btn-danger" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br />
+<br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of
+@Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index",
+ new
+ {
+     page,
+     sortOrder = ViewBag.CurrentSort,
+     currentFilter =
+ViewBag.CurrentFilter
+ }))
